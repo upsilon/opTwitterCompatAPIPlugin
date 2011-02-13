@@ -9,8 +9,14 @@ class opTwitterCompatAPIJsonView extends opTwitterCompatAPIView
 
   protected function removeArrayKeys(array $source)
   {
+    $source = array_shift($source);
+    if (count($source) > 1)
+    {
+      return $source;
+    }
+
     $values = array();
-    foreach (array_shift($source) as $value)
+    foreach ($source as $value)
     {
       $values[] = array_shift($value);
     }
