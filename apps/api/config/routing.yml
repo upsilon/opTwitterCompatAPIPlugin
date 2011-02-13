@@ -25,4 +25,4 @@ tw_statuses_update:
 tw_statuses_deny:
   class: sfRoute
   url: /twStatues/*
-  param: { module: tw, action: error404 }
+  param: { module: twApi, action: error404 }

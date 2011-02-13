@@ -4,7 +4,7 @@ class twStatusesActions extends opTwitterCompatAPIActions
 {
   public function forward404($message = null)
   {
-    $this->forward('twStatuses', 'error404');
+    $this->forward('twApi', 'error404');
   }
 
   protected function validate($validators, $default = array())
@@ -20,7 +20,7 @@ class twStatusesActions extends opTwitterCompatAPIActions
     }
     catch (sfValidatorError $e)
     {
-      $this->forward('twStatuses', 'error403');
+      $this->forward('twApi', 'error403');
     }
     return $result;
   }
@@ -29,7 +29,7 @@ class twStatusesActions extends opTwitterCompatAPIActions
   {
     if (!isset($_SERVER['PHP_AUTH_USER']))
     {
-      $this->forward('twStatuses', 'basicAuth');
+      $this->forward('twApi', 'basicAuth');
     }
     else
     {
@@ -44,7 +44,7 @@ class twStatusesActions extends opTwitterCompatAPIActions
           return $memberConfig->member_id;
         }
       }
-      $this->forward('twStatuses', 'basicAuth');
+      $this->forward('twApi', 'basicAuth');
     }
   }
 
@@ -77,7 +77,7 @@ class twStatusesActions extends opTwitterCompatAPIActions
       }
     }
 
-    $this->forward('twStatuses', 'error401');
+    $this->forward('twApi', 'error401');
   }
 
   protected function getMemberId()
@@ -90,7 +90,7 @@ class twStatusesActions extends opTwitterCompatAPIActions
     {
       return $this->getMemberIdByBasic();
     }
-    $this->forward('twStatuses', 'error401');
+    $this->forward('twApi', 'error401');
   }
 
   public function executeHomeTimeline(sfWebRequest $request)
@@ -159,32 +159,5 @@ class twStatusesActions extends opTwitterCompatAPIActions
 
     $this->activity = Doctrine::getTable('ActivityData')->updateActivity($memberId, $params['status']);
     $this->term_user = $params['term_user'];
-  }
-
-
-  public function executeBasicAuth(sfWebRequest $request)
-  {
-    $response = $this->getResponse();
-    $response->setHttpHeader('WWW-Authenticate', 'Basic realm="Please enter your address and password"');
-    $response->setStatusCode(401);
-    return $this->renderText('401 Unauthorized');
-  }
-
-  public function executeError401(sfWebRequest $request)
-  {
-    $this->getResponse()->setStatusCode(401);
-    return $this->renderText('401 Unauthorized');
-  }
-
-  public function executeError403(sfWebRequest $request)
-  {
-    $this->getResponse()->setStatusCode(403);
-    return $this->renderText('403 Forbidden');
-  }
-
-  public function executeError404(sfWebRequest $request)
-  {
-    $this->getResponse()->setStatusCode(404);
-    return $this->renderText('404 Not Found');
   }
 }
