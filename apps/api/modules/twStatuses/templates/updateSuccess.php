@@ -1,5 +1,7 @@
 <?php
 
+use_helper('opApiActivityConvert');
+
 return array(
-  'status' => opActivityDataConverter::activityToStatus($activity, $term_user),
+  'status' => activity_to_status($activity, $term_user),
 );

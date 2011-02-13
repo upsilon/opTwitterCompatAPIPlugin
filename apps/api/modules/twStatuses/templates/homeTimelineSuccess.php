@@ -1,10 +1,12 @@
 <?php
 
+use_helper('opApiActivityConvert');
+
 $statuses = array();
 foreach ($activities as $activity)
 {
   $statuses[] = array(
-    'status' => opActivityDataConverter::activityToStatus($activity, $term_user),
+    'status' => activity_to_status($activity, $term_user),
   );
 }
 
