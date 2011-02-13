@@ -26,3 +26,15 @@ tw_statuses_deny:
   class: sfRoute
   url: /twStatues/*
   param: { module: twApi, action: error404 }
+
+tw_account_verify_credentials:
+  class: sfRequestRoute
+  url: /tw/account/verify_credentials.:sf_format
+  param: { module: twAccount, action: verifyCredentials }
+  requirements: { sf_method: [get], sf_format: "^(json|xml)$" }
+
+tw_account_deny:
+  class: sfRoute
+  url: /twAccount/*
+  param: { module: twApi, action: error404 }
+
