@@ -24,6 +24,27 @@ function member_to_user(Member $member)
   return array(
     'id' => $member->id,
     'name' => $member->name,
+    'profile_image_url' => op_member_image_path($member, true),
     'screen_name' => $member->name,
   );
 }
+
+function op_member_image_path(Member $member, $absolute = false)
+{
+  $profileimg = $member->getImageFileName();
+  if (!$profileimg)
+  {
+    static $noimage = null;
+    if ($noimage !== null)
+    {
+      return $noimage;
+    }
+
+    use_helper('opUtil');
+    return $noimage = op_image_path('no_image.gif', $absolute);
+  }
+
+  use_helper('sfImage');
+  return sf_image_path($profileimg, array(), $absolute);
+}
+
