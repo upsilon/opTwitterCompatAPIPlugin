@@ -1,10 +1,10 @@
 <?php
 
-class saaActions extends sfActions
+class twStatusesActions extends sfActions
 {
   public function forward404($message = null)
   {
-    $this->forward('saa', 'error404');
+    $this->forward('twStatuses', 'error404');
   }
 
   protected function render($data)
@@ -30,7 +30,7 @@ class saaActions extends sfActions
     }
     catch (sfValidatorError $e)
     {
-      $this->forward('saa', 'error403');
+      $this->forward('twStatuses', 'error403');
     }
     return $result;
   }
@@ -39,7 +39,7 @@ class saaActions extends sfActions
   {
     if (!isset($_SERVER['PHP_AUTH_USER']))
     {
-      $this->forward('saa', 'basicAuth');
+      $this->forward('twStatuses', 'basicAuth');
     }
     else
     {
@@ -54,7 +54,7 @@ class saaActions extends sfActions
           return $memberConfig->getMemberId();
         }
       }
-      $this->forward('saa', 'basicAuth');
+      $this->forward('twStatuses', 'basicAuth');
     }
   }
 
@@ -87,7 +87,7 @@ class saaActions extends sfActions
       }
     }
 
-    $this->forward('saa', 'error401');
+    $this->forward('twStatuses', 'error401');
   }
 
   protected function getMemberId()
@@ -96,14 +96,14 @@ class saaActions extends sfActions
     {
       return $this->getMemberIdByOAuth();
     }
-    if (sfConfig::get('op_saa_use_basic_auth', false))
+    if (sfConfig::get('op_twcompat_use_basic_auth', false))
     {
       return $this->getMemberIdByBasic();
     }
-    $this->forward('saa', 'error401');
+    $this->forward('twStatuses', 'error401');
   }
 
-  public function executeStatusesHomeTimeline(sfWebRequest $request)
+  public function executeHomeTimeline(sfWebRequest $request)
   {
     $memberId = $this->getMemberId();
     $validators = array(
@@ -164,7 +164,7 @@ class saaActions extends sfActions
     return $this->render(array('statuses' => $statuses));
   }
 
-  public function executeStatusesUpdate(sfWebRequest $request)
+  public function executeUpdate(sfWebRequest $request)
   {
     $memberId = $this->getMemberId();
     $validators = array(

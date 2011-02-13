@@ -1,28 +1,28 @@
-#api_statuses_public_timeline:
+#tw_statuses_public_timeline:
 #  class: sfRequestRoute
-#  url: /statuses/public_timeline.:format
-#  param: { module: saa, action: statusesPublicTimeline }
-#  requirements: { sf_method: [get], format: "^(json|xml)$" }
+#  url: /tw/statuses/public_timeline.:sf_format
+#  param: { module: twStatuses, action: publicTimeline }
+#  requirements: { sf_method: [get], sf_format: "^(json|xml)$" }
 
-api_statuses_home_timeline:
+tw_statuses_home_timeline:
   class: sfRequestRoute
-  url: /statuses/home_timeline.:format
-  param: { module: saa, action: statusesHomeTimeline }
-  requirements: { sf_method: [get], format: "^(json|xml)$" }
+  url: /tw/statuses/home_timeline.:sf_format
+  param: { module: twStatuses, action: homeTimeline }
+  requirements: { sf_method: [get], sf_format: "^(json|xml)$" }
 
-api_statuses_friends_timeline:
+tw_statuses_friends_timeline:
   class: sfRequestRoute
-  url: /statuses/friends_timeline.:format
-  param: { module: saa, action: statusesHomeTimeline }
-  requirements: { sf_method: [get], format: "^(json|xml)$" }
+  url: /tw/statuses/friends_timeline.:sf_format
+  param: { module: twStatuses, action: homeTimeline }
+  requirements: { sf_method: [get], sf_format: "^(json|xml)$" }
 
-api_statuses_update:
+tw_statuses_update:
   class: sfRequestRoute
-  url: /statuses/update.:format
-  param: { module: saa, action: statusesUpdate }
-  requirements: { sf_method: [post], format: "^(json|xml)$" }
+  url: /tw/statuses/update.:sf_format
+  param: { module: twStatuses, action: update }
+  requirements: { sf_method: [post], sf_format: "^(json|xml)$" }
 
-api_saa_deny:
+tw_statuses_deny:
   class: sfRoute
-  url: /saa/*
-  param: { module: saa, action: error404 }
+  url: /twStatues/*
+  param: { module: tw, action: error404 }
