@@ -1,13 +1,13 @@
 <?php
 
-class opSaaExportXml extends opSaaExport
+class opTwitterCompatAPIXmlView extends opTwitterCompatAPIView
 {
   protected $domDocument;
 
-  public function export(array $data)
+  public function renderOutput(array $values)
   {
     $this->domDocument = new DOMDocument('1.0', 'UTF-8');
-    $this->arrayToXml($data);
+    $this->arrayToXml($values);
     return $this->domDocument->saveXML();
   }
 
@@ -73,7 +73,7 @@ class opSaaExportXml extends opSaaExport
     }
   }
 
-  public function getContentType()
+  static public function getContentType()
   {
     return 'application/xml';
   }

@@ -1,20 +1,10 @@
 <?php
 
-class twStatusesActions extends sfActions
+class twStatusesActions extends opTwitterCompatAPIActions
 {
   public function forward404($message = null)
   {
     $this->forward('twStatuses', 'error404');
-  }
-
-  protected function render($data)
-  {
-    $format = $this->getRequest()->getParameter('format', 'json');
-    $class = 'opSaaExport'.ucfirst(strtolower($format));
-    $this->forward404Unless(class_exists($class));
-    $exportClass = new $class;
-    $this->getResponse()->setContentType($exportClass->getContentType());
-    return $this->renderText($exportClass->export($data));
   }
 
   protected function validate($validators, $default = array())
@@ -48,10 +38,10 @@ class twStatusesActions extends sfActions
       $memberConfig = Doctrine::getTable('MemberConfig')->retrieveByNameAndValue('pc_address', $email);
       if ($memberConfig)
       {
-        $data = $memberConfig->getMember()->getConfig('password');
+        $data = $memberConfig->Member->getConfig('password');
         if ($data === $password)
         {
-          return $memberConfig->getMemberId();
+          return $memberConfig->member_id;
         }
       }
       $this->forward('twStatuses', 'basicAuth');
@@ -82,7 +72,7 @@ class twStatusesActions extends sfActions
         if ('member' === $tokenType)
         {
           $accessToken = Doctrine::getTable('OAuthMemberToken')->findByKeyString($token->key, 'access');
-          return $accessToken->getMemberId();
+          return $accessToken->member_id;
         }
       }
     }
@@ -154,14 +144,8 @@ class twStatusesActions extends sfActions
       $q->offset(($params['page'] - 1) * $params['count']);
     }
 
-    $activities = $q->orderBy('id DESC')->execute();
-    $statuses = array();
-    foreach ($activities as $activity)
-    {
-      $statuses[] = array('status' => opActivityDataConverter::activityToStatus($activity, $params['term_user']));
-    }
-
-    return $this->render(array('statuses' => $statuses));
+    $this->activities = $q->orderBy('id DESC')->execute();
+    $this->term_user = $params['term_user'];
   }
 
   public function executeUpdate(sfWebRequest $request)
@@ -172,9 +156,9 @@ class twStatusesActions extends sfActions
       'term_user' => new sfValidatorBoolean(array('required' => false)),
     );
     $params = $this->validate($validators, array('term_user' => false));
-    $activity = Doctrine::getTable('ActivityData')->updateActivity($memberId, $params['status']);
 
-    return $this->render(array('status' => opActivityDataConverter::activityToStatus($activity, $params['term_user'])));
+    $this->activity = Doctrine::getTable('ActivityData')->updateActivity($memberId, $params['status']);
+    $this->term_user = $params['term_user'];
   }
 
 
