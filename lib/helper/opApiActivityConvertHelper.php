@@ -3,7 +3,7 @@
 function activity_to_status(ActivityData $activity, $isTermUser = false)
 {
   $result = array(
-    'created_at' => $activity->created_at,
+    'created_at' => op_format_date_twitter_compat($activity->created_at),
     'id' => $activity->id,
     'text' => $activity->body,
   );
@@ -27,6 +27,11 @@ function member_to_user(Member $member)
     'profile_image_url' => op_member_image_path($member, true),
     'screen_name' => $member->name,
   );
+}
+
+function op_format_date_twitter_compat($date)
+{
+  return gmdate('D M j H:i:s O Y', strtotime($date));
 }
 
 function op_member_image_path(Member $member, $absolute = false)
